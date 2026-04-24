@@ -1,0 +1,72 @@
+name: clinic-es
+description: Golden cases for a small LATAM clinic's WhatsApp bot. Spanish (rioplatense).
+
+cases:
+  - id: schedule-001
+    inbound: "Hola, quería saber que horarios de atención tienen"
+    tags: [schedule]
+    expect:
+      intent: schedule_query
+      answer_contains:
+        - "lunes"
+        - "viernes"
+      answer_does_not_contain:
+        - "no sé"
+        - "no se que"
+      max_latency_ms: 2500
+      max_cost_usd: 0.01
+
+  - id: schedule-002
+    inbound: "A qué hora abren hoy?"
+    tags: [schedule]
+    expect:
+      intent: schedule_query
+      answer_contains:
+        - "9"
+
+  - id: booking-001
+    inbound: "Quería agendar un turno para la próxima semana"
+    tags: [booking]
+    expect:
+      intent: booking_intent
+      answer_contains:
+        - "turno"
+      max_latency_ms: 2000
+
+  - id: booking-002
+    inbound: "Cómo reservo una cita?"
+    tags: [booking]
+    expect:
+      intent: booking_intent
+      answer_contains:
+        - "reservar"
+
+  - id: price-001
+    inbound: "Cuánto cuesta la consulta?"
+    tags: [price]
+    expect:
+      intent: price_query
+      answer_contains:
+        - "precio"
+
+  - id: cancel-001
+    inbound: "Necesito cancelar el turno que tenía para mañana"
+    tags: [cancel]
+    expect:
+      intent: cancel_intent
+      answer_contains:
+        - "CANCELAR"
+
+  - id: offtopic-001
+    inbound: "Me recomendás un buen libro?"
+    tags: [offtopic]
+    expect:
+      answer_does_not_contain:
+        - "lunes"   # bot should not hallucinate schedule info
+      max_latency_ms: 2500
+
+  - id: edge-empty-ish
+    inbound: "hola"
+    tags: [edge]
+    expect:
+      max_latency_ms: 2500

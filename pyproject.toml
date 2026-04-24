@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "whatsapp-rag-eval"
+version = "0.1.0"
+description = "YAML-driven evaluation harness for WhatsApp RAG bots — quality, latency, cost in one report."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Santiago Arteta" }]
+keywords = ["rag", "llm-eval", "whatsapp", "chatbot", "evaluation"]
+dependencies = ["PyYAML>=6.0"]
+
+[project.scripts]
+whatsapp-rag-eval = "whatsapp_rag_eval.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
