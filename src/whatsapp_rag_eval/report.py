@@ -9,7 +9,7 @@ from .runner import SuiteResult
 def to_markdown(result: SuiteResult) -> str:
     suite = result.suite
     lines: list[str] = []
-    lines.append(f"# {suite.name} — eval report\n")
+    lines.append(f"# {suite.name} -- eval report\n")
     if suite.description:
         lines.append(f"_{suite.description}_\n")
 
@@ -30,7 +30,7 @@ def to_markdown(result: SuiteResult) -> str:
         if len(inbound) > 60:
             inbound = inbound[:57] + "..."
         failed = [chk.name for chk in c.checks if not chk.passed]
-        lines.append(f"| `{c.case.id}` | {inbound} | {status} | {', '.join(failed) or '—'} |")
+        lines.append(f"| `{c.case.id}` | {inbound} | {status} | {', '.join(failed) or '--'} |")
 
     # Failure detail
     failed_cases = [c for c in result.cases if not c.passed]
@@ -42,7 +42,7 @@ def to_markdown(result: SuiteResult) -> str:
             lines.append(f"**Got:** {c.response.answer}\n")
             for chk in c.checks:
                 mark = "✅" if chk.passed else "❌"
-                lines.append(f"- {mark} **{chk.name}** — {chk.detail}")
+                lines.append(f"- {mark} **{chk.name}** -- {chk.detail}")
             lines.append("")
 
     return "\n".join(lines) + "\n"

@@ -4,17 +4,20 @@
 [![python](https://img.shields.io/badge/python-3.11%20%7C%203.12%20%7C%203.13-blue)](https://www.python.org)
 [![license](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
-A tiny, YAML-driven evaluation harness for WhatsApp RAG bots. Catches the
-failure modes that actually matter in production: wrong intent, missing
-information, hallucinated phrases, slow replies, blown token cost.
+YAML-driven evaluation harness for WhatsApp RAG bots. Catches the failure modes that matter in production: wrong intent, missing information, hallucinated phrases, slow replies, blown token cost.
 
 ![demo](./examples/demo.png)
 
-Built because every clinic / law-firm / broker I shipped a bot for ended
-up asking the same question after the honeymoon week — _"how do I know
-this is still working?"_ — and none of the existing eval tools speak the
-WhatsApp use case (short turns, intent tags, Spanish/Portuguese, cost per
-conversation).
+```mermaid
+flowchart LR
+    Y[suite.yml<br/>cases + expectations] --> R[runner.run]
+    B[your bot<br/>Case -> BotResponse] --> R
+    R --> EV[evaluators<br/>intent / contains / latency / cost]
+    EV --> RP[report.md]
+    RP --> CI[CI exit code<br/>0 = pass / 1 = regression]
+```
+
+Existing eval tools focus on long-form QA. WhatsApp conversations are short turns with intent tags, Spanish/Portuguese, and cost per conversation. This kit handles those.
 
 ## What it does
 
@@ -55,7 +58,7 @@ Exit code is non-zero if any case fails, so this works in CI as a
 regression gate for your bot.
 
 See [`examples/example-report.md`](./examples/example-report.md) for a
-rendered sample report (a real run where one case fails — that's the
+rendered sample report (a real run where one case fails -- that's the
 failure detail section showing exactly what went wrong).
 
 ## Checks it runs
@@ -70,9 +73,7 @@ Each case can declare any of these. Unspecified checks are skipped.
 | `max_latency_ms` | observed latency ≤ cap | `2400ms (cap 2000ms)` |
 | `max_cost_usd` | observed cost ≤ cap | `$0.0180 (cap $0.0100)` |
 
-The `does_not_contain` check is the one that has caught the most real
-bugs for me — it's how I detect a bot that "confidently makes up"
-schedule info or prices.
+The `does_not_contain` check catches the "confidently makes up" failure mode where the bot invents schedule info or prices that are not in the knowledge base.
 
 ## Wiring your own bot
 
@@ -107,7 +108,7 @@ cost predictable and CI runs fast.
 ## Roadmap
 
 - [ ] LLM-as-judge evaluator for free-form answer quality (the existing
-      checks are deterministic — the judge mode would add qualitative
+      checks are deterministic -- the judge mode would add qualitative
       grading with a rubric)
 - [ ] HTML report with charts (per-intent accuracy, latency histograms)
 - [ ] Golden-answer regression mode (diff vs last run, show only what

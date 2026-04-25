@@ -23,4 +23,4 @@ jobs:
       - run: pip install pytest
       - run: pytest tests/ -v
       - name: Run example suite
-        run: python -m whatsapp_rag_eval --suite suites/clinic-es.yml --report out/ci-report.md || echo "Some cases failed as expected — kit returns non-zero when failures present"
+        run: python -m whatsapp_rag_eval --suite suites/clinic-es.yml --report out/ci-report.md || echo "Some cases failed as expected -- kit returns non-zero when failures present"

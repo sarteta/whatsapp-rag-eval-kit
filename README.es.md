@@ -8,7 +8,7 @@ faltante, frases alucinadas, respuestas lentas, costo de tokens disparado.
 
 Lo armé porque cada clínica / estudio jurídico / inmobiliaria para la que
 shippeé un bot terminaba preguntando lo mismo después de la semana de
-luna de miel — _"¿cómo sé que esto sigue funcionando?"_ — y ninguna
+luna de miel -- _"¿cómo sé que esto sigue funcionando?"_ -- y ninguna
 herramienta de eval existente habla el caso WhatsApp (turnos cortos,
 tags de intent, español/portugués, costo por conversación).
 

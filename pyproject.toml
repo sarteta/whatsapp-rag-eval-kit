@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "whatsapp-rag-eval"
 version = "0.1.0"
-description = "YAML-driven evaluation harness for WhatsApp RAG bots — quality, latency, cost in one report."
+description = "YAML-driven evaluation harness for WhatsApp RAG bots -- quality, latency, cost in one report."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { text = "MIT" }

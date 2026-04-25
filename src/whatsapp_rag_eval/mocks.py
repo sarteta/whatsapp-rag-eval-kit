@@ -1,4 +1,4 @@
-"""Deterministic mock bot — used for CI and for out-of-the-box demos so the
+"""Deterministic mock bot -- used for CI and for out-of-the-box demos so the
 kit works without an LLM provider configured."""
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ ScriptedReply = dict[str, dict]
 
 # A simple scripted bot that looks at keywords in the inbound and produces
 # a canned answer + intent. Mirrors what a sloppy rule-first WhatsApp bot
-# would do — good enough to exercise the eval machinery.
+# would do -- good enough to exercise the eval machinery.
 DEFAULT_SCRIPT: ScriptedReply = {
     "horario|horarios|abren|cerrado|atencion": {
         "answer": "Atendemos de lunes a viernes de 9 a 18 hs. Los sabados de 9 a 13.",
@@ -58,7 +58,7 @@ def mock_bot(case: Case, script: ScriptedReply | None = None, jitter_ms: int = 0
         if keyword_matches(patterns, case.inbound):
             latency = reply["latency_ms"]
             if jitter_ms:
-                # Seed by id for reproducibility — same case -> same jitter
+                # Seed by id for reproducibility -- same case -> same jitter
                 r = random.Random(case.id)
                 latency += r.randint(-jitter_ms, jitter_ms)
             return BotResponse(
@@ -69,7 +69,7 @@ def mock_bot(case: Case, script: ScriptedReply | None = None, jitter_ms: int = 0
                 cost_usd=reply["cost_usd"],
             )
 
-    # Fallback — triggers many failure modes intentionally so the report shows
+    # Fallback -- triggers many failure modes intentionally so the report shows
     # actual problems.
     return BotResponse(
         case_id=case.id,

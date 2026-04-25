@@ -23,7 +23,7 @@ def main(argv: list[str] | None = None) -> int:
         "--bot",
         default="mock",
         choices=["mock"],
-        help="Which bot to exercise. Only 'mock' in the open-source kit — bring your own bot by importing and calling `runner.run()` from your code.",
+        help="Which bot to exercise. Only 'mock' in the open-source kit -- bring your own bot by importing and calling `runner.run()` from your code.",
     )
     args = ap.parse_args(argv)
 
