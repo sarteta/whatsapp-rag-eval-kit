@@ -1,6 +1,7 @@
 """Individual evaluators. Each returns a (passed, detail) tuple."""
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 
 from .loader import Case
@@ -54,6 +55,22 @@ def does_not_contain_check(case: Case, resp: BotResponse) -> CheckResult | None:
     return CheckResult("answer_does_not_contain", ok, detail)
 
 
+def regex_check(case: Case, resp: BotResponse) -> CheckResult | None:
+    if not case.expect.answer_matches_regex:
+        return None
+    haystack = resp.answer
+    failures: list[str] = []
+    for pattern in case.expect.answer_matches_regex:
+        try:
+            if not re.search(pattern, haystack):
+                failures.append(pattern)
+        except re.error as e:
+            return CheckResult("answer_matches_regex", False, f"invalid regex {pattern!r}: {e}")
+    ok = not failures
+    detail = "all patterns matched" if ok else f"unmatched: {failures!r}"
+    return CheckResult("answer_matches_regex", ok, detail)
+
+
 def latency_check(case: Case, resp: BotResponse) -> CheckResult | None:
     cap = case.expect.max_latency_ms
     if cap is None:
@@ -76,6 +93,7 @@ ALL_CHECKS = [
     intent_check,
     contains_check,
     does_not_contain_check,
+    regex_check,
     latency_check,
     cost_check,
 ]

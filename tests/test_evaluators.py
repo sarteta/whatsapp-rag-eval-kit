@@ -66,6 +66,36 @@ def test_does_not_contain_fails_reports_hit():
     assert "no sé" in r.detail
 
 
+def test_regex_check_skipped_when_empty():
+    assert evaluators.regex_check(make_case(), make_resp(answer="anything")) is None
+
+
+def test_regex_check_pass_single_pattern():
+    r = evaluators.regex_check(
+        make_case(answer_matches_regex=[r"\b\d{4}\b"]),
+        make_resp(answer="Tu codigo de reserva es 4821, gracias."),
+    )
+    assert r is not None and r.passed
+
+
+def test_regex_check_fail_reports_unmatched():
+    r = evaluators.regex_check(
+        make_case(answer_matches_regex=[r"\b\d{4}\b", r"gracias"]),
+        make_resp(answer="Reserva confirmada."),
+    )
+    assert r is not None and not r.passed
+    assert "gracias" in r.detail
+
+
+def test_regex_check_invalid_pattern_fails_clearly():
+    r = evaluators.regex_check(
+        make_case(answer_matches_regex=["[unclosed"]),
+        make_resp(answer="anything"),
+    )
+    assert r is not None and not r.passed
+    assert "invalid regex" in r.detail
+
+
 def test_latency_pass_and_fail():
     assert evaluators.latency_check(make_case(max_latency_ms=1000), make_resp(latency_ms=900)).passed
     assert not evaluators.latency_check(make_case(max_latency_ms=1000), make_resp(latency_ms=1200)).passed

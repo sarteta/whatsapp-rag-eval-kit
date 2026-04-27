@@ -70,6 +70,7 @@ Each case can declare any of these. Unspecified checks are skipped.
 | `intent` | exact match vs tag your bot emits | `expected=cancel_intent got=booking_intent` |
 | `answer_contains` | all listed substrings, case-insensitive | `missing: ['lunes']` |
 | `answer_does_not_contain` | none of the listed substrings may appear | `banned phrase present: ['no sé']` |
+| `answer_matches_regex` | every pattern matches via `re.search` | `unmatched: ['\\b\\d{4}\\b']` |
 | `max_latency_ms` | observed latency ≤ cap | `2400ms (cap 2000ms)` |
 | `max_cost_usd` | observed cost ≤ cap | `$0.0180 (cap $0.0100)` |
 

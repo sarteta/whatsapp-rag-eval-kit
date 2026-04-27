@@ -14,6 +14,8 @@ Minimal case shape:
         - "viernes"
       answer_does_not_contain:       # none of these may appear
         - "no se"
+      answer_matches_regex:          # all patterns must match (re.search)
+        - "\\b\\d{4}\\b"             # e.g. a 4-digit booking code
       max_latency_ms: 2500           # optional hard ceiling
       max_cost_usd: 0.01             # optional hard ceiling
 """
@@ -31,6 +33,7 @@ class Expect:
     intent: str | None = None
     answer_contains: list[str] = field(default_factory=list)
     answer_does_not_contain: list[str] = field(default_factory=list)
+    answer_matches_regex: list[str] = field(default_factory=list)
     max_latency_ms: int | None = None
     max_cost_usd: float | None = None
 
@@ -94,6 +97,7 @@ def _parse_case(raw: Any, index: int) -> Case:
         intent=expect_raw.get("intent"),
         answer_contains=list(expect_raw.get("answer_contains", [])),
         answer_does_not_contain=list(expect_raw.get("answer_does_not_contain", [])),
+        answer_matches_regex=list(expect_raw.get("answer_matches_regex", [])),
         max_latency_ms=expect_raw.get("max_latency_ms"),
         max_cost_usd=expect_raw.get("max_cost_usd"),
     )
